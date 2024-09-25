@@ -12,55 +12,91 @@ class PageMain extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController nombreController = TextEditingController();
 
-    void sendData() {
-      ListItem newItem =
-          ListItem(title: nombreController.text, content: "", id: 0);
-      context.read<ListCubit>().saveANewItem(newItem);
-    }
-
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const PageCreate()));
-        },
-        child: Icon(Icons.add),
-      ),
-      body: Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(10),
-            width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(color: Colors.white),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("CUBIT TEST"),
-                IconButton(onPressed: () {}, icon: Icon(Icons.menu))
-              ],
-            ),
-          ),
-          BlocConsumer<ListCubit, ListState>(
-            listener: (context, state) {},
-            builder: (context, state) {
-              if (state is ListInitialState) {
-                return Expanded(
-                  child: ListView.separated(
-                    itemCount: state.listItem.length,
-                    separatorBuilder: (BuildContext context, int index) =>
-                        const Divider(),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Text(state.listItem[index].title);
-                    },
+    return BlocConsumer<ListCubit, ListState>(
+      builder: (context, state) {
+        if (state is ListInitialState) {
+          return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 209, 209, 209),
+            body: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Container(
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black,
+                          spreadRadius: 0,
+                          blurRadius: 1, // changes position of shadow
+                        ),
+                      ],
+                    ),
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "CUBIT TEST 1",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800, fontSize: 25),
+                        ),
+                        IconButton(
+                            onPressed: () {}, icon: const Icon(Icons.menu))
+                      ],
+                    ),
                   ),
-                );
-              } else {
-                return Container();
-              }
-            },
-          ),
-        ],
-      ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: Container(
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            spreadRadius: 0,
+                            blurRadius: 1, // changes position of shadow
+                          ),
+                        ],
+                      ),
+                      width: MediaQuery.of(context).size.width,
+                      child: ListView.separated(
+                        itemCount: state.listItem.length,
+                        separatorBuilder: (BuildContext context, int index) =>
+                            const Divider(),
+                        itemBuilder: (BuildContext context, int index) {
+                          return Text(state.listItem[index].title);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: Colors.black,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PageCreate()));
+              },
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+          );
+        } else {
+          return Container();
+        }
+      },
+      listener: (context, state) {},
     );
   }
 }
