@@ -15,6 +15,11 @@ class PageMain extends StatelessWidget {
     return BlocConsumer<ListCubit, ListState>(
       builder: (context, state) {
         if (state is ListInitialState) {
+          @override
+          void initState() {
+            print(state.listItem[0].title);
+          }
+
           return Scaffold(
             backgroundColor: const Color.fromARGB(255, 209, 209, 209),
             body: Container(
